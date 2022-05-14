@@ -1,0 +1,26 @@
+Network Configuration
+1. Assign IP on routers
+a. In config terminal, configure hostname
+b. In config terminal, configure interface for port (f0/0, f0/1, etc.)
+c. In port interface set IP address and subnet mask. (ip address 172.16.1.1 255.255.255.0)
+d. No shutdown (optional)
+e. Configure interface for serial port (external, s0/3/0 for example)
+f. Do the same for all downstream routers, like ISPs 
+2. Configure DHCP server on local routers
+a. In configure terminal, go to ip (ip dhcp …)
+b. Establish ip address excluded from the DHCP range. Use exclude-address command
+c. Name dhcp pool. This will take you to dhcp-config
+d. Set network ID. (network 172.16.100.1 255.255.255.0)
+e. Configure default gateway with default-router command
+f. Configure dns server with dns-server command.
+3. Configure Default on client side router and static from ISP
+a. In configure terminal, use ip route command. (ex. ip route 0.0.0.0 0.0.0.0 $(ip of isp router))
+b. In ISP router, set ip route 172.16.100.0 255.255.255.0 $(ip of router, like 203.1.1.2))
+c. show ip route will show configurations (in privilege shell)	
+4. Configure interface inside and out
+a. Enter interface for inside network. Should be a fx/x port. Use ip nat inside command
+b. Enter interface for outside network. Should be int sx/x/x, and set nat to outside
+5. Create Access list 100 on Local router
+a. In configure terminal, set access-list 100 permit ip any any
+6. Call access list
+a. On same router, use ip nat inside source list 100 interface sx/x/x overload
